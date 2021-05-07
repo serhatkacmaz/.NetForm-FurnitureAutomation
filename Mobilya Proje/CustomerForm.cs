@@ -693,41 +693,42 @@ namespace Mobilya_Proje
         // FATURALARIM sekmesinde Sipariş bilgileri tablosunda herhangi bir hücreye tıklandığında
         private void dtgd_order_info_table_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Sipariş bilgileri tablosunda seçilmiş olan hücrenin satır indisini seç
-            int selectedarea = dtgd_order_info_table.SelectedCells[0].RowIndex;
-            // Tablodaki sipariş numarasını alıyoruz
-            int order_no = int.Parse(dtgd_order_info_table.Rows[selectedarea].Cells[0].Value.ToString());
-
-            // Sipariş detayları tablosunu dolduruyoruz ilgili sipariş numarasına göre
-            connection.filtering("SELECT u.urun_kod 'Ürün NO',k.ad 'Ürün Kategori',u.ad 'Ürün Ad',sd.adet 'Adet',u.aciklama 'Açıklama' FROM siparis s INNER JOIN siparisdetay sd ON(s.siparis_no=sd.siparis_no) " +
-                "INNER JOIN urun u ON(u.urun_kod=sd.urun_kod) INNER JOIN kategori k ON(k.kategori_kod = u.kategori_kod) WHERE s.siparis_no='" + order_no + "'", dtgd_order_details);
-
-            // SQL SORGUSU FATURA =
-            // "SELECT f.fatura_no 'Fatura NO', su.ad 'Şube Adı',p.ad 'Satış Temsilcisi', f.tutar 'Toplam Tutar', f.kesim_tarih 'Kesim Tarihi' FROM siparis s " +
-            // "INNER JOIN sube su ON(su.sube_no=s.sube_no) INNER JOIN fatura f ON(f.siparis_no=s.siparis_no) INNER JOIN personel p ON(p.sicil_no = s.sicil_no) WHERE s.siparis_no='" + order_no + "'"
-
-
-
-            // Fatura Bilgisi
-            connection.OpenConnection();
-
-            MySqlDataReader read_bill = connection.DataReader("SELECT f.fatura_no 'Fatura NO', su.ad 'Şube Adı',concat(p.ad,' ',p.soyad) 'Satış Temsilcisi', f.tutar 'Toplam Tutar', f.kesim_tarih 'Kesim Tarihi' FROM siparis s " +
-                "INNER JOIN sube su ON(su.sube_no=s.sube_no) INNER JOIN fatura f ON(f.siparis_no=s.siparis_no) INNER JOIN personel p ON(p.sicil_no = s.sicil_no) WHERE s.siparis_no='" + order_no + "' and s.durum='T'");
-
-            if (read_bill.Read())
+            if (dtgd_order_info_table.RowCount>0)
             {
-                lbl_bill_no.Text = read_bill["Fatura NO"].ToString();
-                lbl_branch_title.Text = read_bill["Şube Adı"].ToString();
-                lbl_sales_rep.Text = read_bill["Satış Temsilcisi"].ToString();
-                lbl_total_price.Text = read_bill["Toplam Tutar"].ToString() + " TL";
-                lbl_bill_date.Text = read_bill["Kesim Tarihi"].ToString();
-            }
-            else
-            {
-                Clear_TextBox_Bill();
-            }
+                // Sipariş bilgileri tablosunda seçilmiş olan hücrenin satır indisini seç
+                int selectedarea = dtgd_order_info_table.SelectedCells[0].RowIndex;
+                // Tablodaki sipariş numarasını alıyoruz
+                int order_no = int.Parse(dtgd_order_info_table.Rows[selectedarea].Cells[0].Value.ToString());
 
-            connection.CloseConnection();
+                // Sipariş detayları tablosunu dolduruyoruz ilgili sipariş numarasına göre
+                connection.filtering("SELECT u.urun_kod 'Ürün NO',k.ad 'Ürün Kategori',u.ad 'Ürün Ad',sd.adet 'Adet',u.aciklama 'Açıklama' FROM siparis s INNER JOIN siparisdetay sd ON(s.siparis_no=sd.siparis_no) " +
+                    "INNER JOIN urun u ON(u.urun_kod=sd.urun_kod) INNER JOIN kategori k ON(k.kategori_kod = u.kategori_kod) WHERE s.siparis_no='" + order_no + "'", dtgd_order_details);
+
+                // SQL SORGUSU FATURA =
+                // "SELECT f.fatura_no 'Fatura NO', su.ad 'Şube Adı',p.ad 'Satış Temsilcisi', f.tutar 'Toplam Tutar', f.kesim_tarih 'Kesim Tarihi' FROM siparis s " +
+                // "INNER JOIN sube su ON(su.sube_no=s.sube_no) INNER JOIN fatura f ON(f.siparis_no=s.siparis_no) INNER JOIN personel p ON(p.sicil_no = s.sicil_no) WHERE s.siparis_no='" + order_no + "'"
+
+                // Fatura Bilgisi
+                connection.OpenConnection();
+
+                MySqlDataReader read_bill = connection.DataReader("SELECT f.fatura_no 'Fatura NO', su.ad 'Şube Adı',concat(p.ad,' ',p.soyad) 'Satış Temsilcisi', f.tutar 'Toplam Tutar', f.kesim_tarih 'Kesim Tarihi' FROM siparis s " +
+                    "INNER JOIN sube su ON(su.sube_no=s.sube_no) INNER JOIN fatura f ON(f.siparis_no=s.siparis_no) INNER JOIN personel p ON(p.sicil_no = s.sicil_no) WHERE s.siparis_no='" + order_no + "' and s.durum='T'");
+
+                if (read_bill.Read())
+                {
+                    lbl_bill_no.Text = read_bill["Fatura NO"].ToString();
+                    lbl_branch_title.Text = read_bill["Şube Adı"].ToString();
+                    lbl_sales_rep.Text = read_bill["Satış Temsilcisi"].ToString();
+                    lbl_total_price.Text = read_bill["Toplam Tutar"].ToString() + " TL";
+                    lbl_bill_date.Text = read_bill["Kesim Tarihi"].ToString();
+                }
+                else
+                {
+                    Clear_TextBox_Bill();
+                }
+
+                connection.CloseConnection();
+            }
         }
 
 

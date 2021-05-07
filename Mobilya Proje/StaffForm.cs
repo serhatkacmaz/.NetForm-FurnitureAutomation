@@ -162,27 +162,31 @@ namespace Mobilya_Proje
         // sipariş bilgileri için olan dataGridView de bir hücreye tıklarsa
         private void dtgd_order_table_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            product_and_count.Clear(); //Dictionary her seferinde sıfırlansın
-
-            int selectedarea = dtgd_order_table.SelectedCells[0].RowIndex;  //seçili satır 
-            order_number = int.Parse(dtgd_order_table.Rows[selectedarea].Cells[0].Value.ToString()); //sipariş_no
-
-            //datagridView_order_detail için sipariş detaylarını filtreler
-            connection.filtering("select sprdty.urun_kod as'Ürün Kodu', urn.ad as 'Ürün Adı', sprdty.adet as 'Adet', round(urn.fiyat*adet,2) as 'Toplam Fiyat'" +
-                "from siparis spr, siparisdetay sprdty,urun urn where spr.siparis_no='" + order_number + "' and" +
-                "(spr.siparis_no=sprdty.siparis_no and urn.urun_kod=sprdty.urun_kod);", dtgd_order_detail_table);
-
-            //toplam fiyatı hesapla ve yaz
-            int grid_row = dtgd_order_detail_table.RowCount; //sipariş detay tablosundaki satır sayısı
-            cost = 0;
-            for (int i = 0; i < grid_row; i++)
+            if (dtgd_order_table.RowCount>0)
             {
-                cost += float.Parse(dtgd_order_detail_table.Rows[i].Cells[3].Value.ToString()); //maliyet
-                int key = int.Parse(dtgd_order_detail_table.Rows[i].Cells[0].Value.ToString());  //urun_kod
-                int value = int.Parse(dtgd_order_detail_table.Rows[i].Cells[2].Value.ToString());   //adet
-                product_and_count.Add(key, value);  // urun_kod ve adet olarak dictionary içinde eşleştir
+                product_and_count.Clear(); //Dictionary her seferinde sıfırlansın
+
+                int selectedarea = dtgd_order_table.SelectedCells[0].RowIndex;  //seçili satır 
+                order_number = int.Parse(dtgd_order_table.Rows[selectedarea].Cells[0].Value.ToString()); //sipariş_no
+
+                //datagridView_order_detail için sipariş detaylarını filtreler
+                connection.filtering("select sprdty.urun_kod as'Ürün Kodu', urn.ad as 'Ürün Adı', sprdty.adet as 'Adet', round(urn.fiyat*adet,2) as 'Toplam Fiyat'" +
+                    "from siparis spr, siparisdetay sprdty,urun urn where spr.siparis_no='" + order_number + "' and" +
+                    "(spr.siparis_no=sprdty.siparis_no and urn.urun_kod=sprdty.urun_kod);", dtgd_order_detail_table);
+
+                //toplam fiyatı hesapla ve yaz
+                int grid_row = dtgd_order_detail_table.RowCount; //sipariş detay tablosundaki satır sayısı
+                cost = 0;
+                for (int i = 0; i < grid_row; i++)
+                {
+                    cost += float.Parse(dtgd_order_detail_table.Rows[i].Cells[3].Value.ToString()); //maliyet
+                    int key = int.Parse(dtgd_order_detail_table.Rows[i].Cells[0].Value.ToString());  //urun_kod
+                    int value = int.Parse(dtgd_order_detail_table.Rows[i].Cells[2].Value.ToString());   //adet
+                    product_and_count.Add(key, value);  // urun_kod ve adet olarak dictionary içinde eşleştir
+                }
+                lbl_cost.Text = cost.ToString() + " TL";
             }
-            lbl_cost.Text = cost.ToString() + " TL";
+            
         }
 
         //ürün koduna göre stok durumu arama
