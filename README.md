@@ -11,7 +11,7 @@ Barış Adıgüzel
 Ömer Faruk Yılmaz
 
 
-[Abstract](url)
+Abstract
 
 The growth in digital marketing has undeniably developed in recent years. In short, digital marketing is all about using IoT devices or such products to promote products and services. To touch on the ups and downs of digital marketing; the advantages are that digital marketing saves noticeably more time, promotes the product or firm in an environment or offers more affordable prices. On the other hand, sometimes the quality of the product the customer has bought may be lower than their expectations, or worse, the customer may not recieve the advertised product. Therefore, these can be listed as the disadvantages of digital marketing.
 
