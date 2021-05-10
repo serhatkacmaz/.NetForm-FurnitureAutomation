@@ -19,4 +19,4 @@ Requirements :
 3) The imported SQL file's schema(database) name must be "mobilya".
 4) Username and password fields must be "root" in MySQL workbench connections.
 5) Make sure your MySQL server running in the background.
-6) Done, you can execute the "Mobilya Proje.exe"
+6) Done, you can execute the "Mobilya Proje.exe".
