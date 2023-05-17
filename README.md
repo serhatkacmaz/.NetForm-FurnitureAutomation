@@ -1,6 +1,6 @@
 # Furniture_Automation
 School project for Database Management Systems.
-A furniture automation program developed with C#.
+A furniture automation program developed with C# (Form Application).
 
 This project's been developed by 3 people.
 
